@@ -4,7 +4,7 @@
     <?php endif; ?>
     <?php if(isset($signin_notification)): ?>
         <div class="ntf_messages">
-           <p><?php echo $signin_notification ?></p>
+           <p><?php echo $signin_notification; ?></p>
         </div>
     <?php endif;?>
     <?php echo form_open("signin"); ?>
@@ -12,6 +12,6 @@
     <input type="password" name="usr_password" placeholder="password" title="your password" />
     <button class="btn-submit" type="submit">Sign in</button>
     <a class="btn-signup" href="<?php echo base_url('register')?>" title="sign up">Sign up</a>
-    <a class="btn-forgotpassword" href="#" title="sign up">Forgot Password</a>
+    <a class="btn-forgotpassword" href="<?php echo base_url('password/forgot_password')?>" title="sign up">Forgot Password</a>
     <?php echo form_close();?>
 </div>

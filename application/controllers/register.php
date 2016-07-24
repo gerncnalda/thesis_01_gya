@@ -10,6 +10,7 @@ class Register extends CI_Controller
         $this->load->helper("security");
         $this->load->helper("string");
         $this->load->library('encryption');
+        $this->load->library('encrypt');
         $this->load->library("form_validation");
         $this->load->model("register_model");
         $this->load->model('users_model');
@@ -39,11 +40,10 @@ class Register extends CI_Controller
             $email_secure    = $email_vrfy_code . '_'. $usr_email;
 
             //encrypt the code
-            $this->encryption->initialize(array('driver'=>'openssl'));
-            $email_secure = urlencode($this->encryption->encrypt($email_secure));
+            $email_secure   = urlencode($email_secure);
 
             //generate the link
-            $link   =   "<a href='" . base_url('password/verify_email') . "/" . $email_secure . "' title='email verification'>here</a>";
+            $link   =   "<a href='" . base_url('password/email_verification') . "/" . $email_secure . "' title='email verification'>Click here</a>";
 
             $data   =   array(
                 'usr_fname'         =>  $usr_fname,
@@ -85,11 +85,9 @@ class Register extends CI_Controller
 
                 if($this->email->send())
                 {
-                    redirect('signin/index/1');
+                    redirect('signin/index/2');
                 } else {
-
                     show_error($this->email->print_debugger());
-
                 }
             }else  {
                 echo "something went wrong";

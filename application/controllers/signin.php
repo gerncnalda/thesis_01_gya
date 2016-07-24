@@ -29,7 +29,7 @@ class  Signin extends CI_Controller
                 echo 'redirect to staff';
             }elseif($_SESSION['usr_access_level'] == 3){
                 //customer  level
-                echo 'redirect to customer dashboard';
+                redirect('me');
             }else{
                 //don't belong here
                 echo "you don't belong here";
@@ -39,9 +39,13 @@ class  Signin extends CI_Controller
             //not logged in
             if($this->form_validation->run('signin') == FALSE)
             {
-                if($msg == 1)
+                if(!is_null($msg))
                 {
-                    $data['signin_notification'] = 'Your account is not activated yet. We\'ve send you an email for verification. Kindly follow the link on your email to activate your account';
+                    $msg_cntnt = array(
+                        1 => 'Email verification successful, you can sign in now.',
+                        2 => 'Your account is not activated yet. We\'ve send you an email for verification. Kindly follow the link on your email to activate your account'
+                    );
+                    $data['signin_notification'] = $msg_cntnt[$msg];
                 }
                 $data['body_class']             = "sign_in_page";
                 $this->load->view('authentication/common/header',$data);
@@ -86,7 +90,7 @@ class  Signin extends CI_Controller
                                 }elseif($data['usr_access_level'] == 2){
                                     echo "redirect to staff";
                                 }elseif($data['usr_access_level'] == 3){
-                                    echo "redirect to customer";
+                                    redirect('me');
                                 }else{
                                     echo "you don't belong here";
                                 }

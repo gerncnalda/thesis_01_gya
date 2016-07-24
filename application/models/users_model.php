@@ -113,6 +113,43 @@ class Users_model extends CI_Model
     }
 
     /**
+     * @param $data
+     * @param $email
+     * @return bool
+     */
+    function does_code_match($data, $email)
+    {
+
+        $query = "SELECT COUNT(*) AS `count`
+                  FROM `users`
+                  WHERE `usr_pwd_change_code` = ?
+                  AND `usr_email` = ? ";
+        $res = $this->db->query($query, array($data['code'], $email));
+        foreach ($res->result() as $row) {
+            $count = $row->count;
+        }
+        if ($count == 1)
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function does_email_code_match($data)
+    {
+        $this->db->where($data);
+        $this->db->get('users');
+        $results = $this->db->count_all_results();
+        if($results == 1)
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @return string
      *
      */
@@ -180,5 +217,18 @@ class Users_model extends CI_Model
         }
     }
 
+    function update_email_verify_code($data)
+    {
+        $data_1  = array('usr_email_verify' => 0);
 
+        $this->db->where('usr_email', $data['usr_email']);
+        $this->db->where('usr_email_verify', $data['usr_email_verify']);
+
+        if($this->db->update('users', $data_1))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
