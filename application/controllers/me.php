@@ -22,6 +22,7 @@ class Me extends CI_Controller
     function index($msg = null)
     {
         $id = $_SESSION['usr_id'];
+
         if($this->form_validation->run('me') == FALSE)
         {
             if(!is_null($msg))
