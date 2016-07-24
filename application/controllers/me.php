@@ -24,6 +24,7 @@ class Me extends CI_Controller
         $id = $_SESSION['usr_id'];
         if($this->form_validation->run('me') == FALSE)
         {
+            //if null ag msg don't do anything
             if(!is_null($msg))
             {
                 $msg_content =  array(
