@@ -103,5 +103,12 @@ $config = array(
             'label' =>  'email address',
             'rules' =>  'required|valid_email|max_length[255]'
         )
+    ),
+    'new_pwd'       =>  array(
+        array(
+            'field' =>  'usr_email',
+            'label' =>  'email address',
+            'rules' =>  'required|valid_email|max_length[255]'
+        )
     )
 );
