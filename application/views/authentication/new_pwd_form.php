@@ -1,4 +1,5 @@
 <div  class="new_pwd_form">
+
     <?php if(validation_errors()):?>
         <div class="ntf_messages"><?php echo validation_errors(); ?></div>
     <?php endif; ?>
