@@ -66,16 +66,16 @@ class Password extends CI_Controller
 
                     $this->load->library("email");
 
-                    $config['protocol']     =   'smtp';
-                    $config['smtp_host']    =   'ssl://smtp.gmail.com';
-                    $config['smtp_port']    =   '465';
-                    $config['smtp_timeout'] =   '30';
-                    $config['smtp_user']    =   'gerncnalda@gmail.com';
-                    $config['smtp_pass']    =   '0q0y05w8vjib';
-                    $config['charset']      =   'utf-8';
-                    $config['newline']      =   "\r\n";
-                    $config['mailtype']     =   'html';
-                    $this->email->initialize($config);
+//                $config['protocol']     =   'smtp';
+//                $config['smtp_host']    =   'ssl://smtp.gmail.com';
+//                $config['smtp_port']    =   '465';
+//                $config['smtp_timeout'] =   '30';
+//                $config['smtp_user']    =   'gerncnalda@gmail.com';
+//                $config['smtp_pass']    =   '0q0y05w8vjib';
+//                $config['charset']      =   'utf-8';
+//                $config['newline']      =   "\r\n";
+//                $config['mailtype']     =   'html';
+//                $this->email->initialize($config);
 
                     $this->email->from('gerncnalda@gmail.com', 'Admin');
                     $this->email->to($usr_email);
@@ -85,7 +85,8 @@ class Password extends CI_Controller
 
                     if($this->email->send())
                     {
-                        redirect('password/forgot_password/2');
+                        echo $email_content;
+//                        redirect('password/forgot_password/2');
                     }
                 }
             }else{
@@ -96,7 +97,49 @@ class Password extends CI_Controller
 
     public function new_password($email_code = null)
     {
-        echo "genrey";
+        if($this->form_validation->run('new_pwd') == FALSE)
+        {
+            if(!is_null($email_code))
+            {
+                $data['pwd_change_code']    =   $email_code;
+            } else {
+                $data['pwd_change_code']    =   $this->input->post('usr_pwd_change_code');
+            }
+            $data['body_class'] = 'new_password';
+            $this->load->view('authentication/common/header',$data);
+            $this->load->view('authentication/navigations/top_nav');
+            $this->load->view('authentication/new_pwd_form', $data);
+            $this->load->view('authentication/common/footer');
+        } else {
+
+            $usr_email              =  xss_clean($this->input->post('usr_email'));
+            $usr_raw_pwd            =  $this->input->post('usr_pwd');
+            $usr_pwd_change_code    =  $this->input->post('usr_pwd_change_code');
+
+            $data   =   array(
+                'usr_email'             =>  $usr_email,
+                'usr_pwd_change_code'   =>  $usr_pwd_change_code
+            );
+
+            if($this->users_model->does_code_match($data))
+            {
+                // code match
+                $usr_hash   =   password_hash($usr_raw_pwd, PASSWORD_DEFAULT);
+                $hash_data  =   array(
+                    'usr_hash'  => $usr_hash
+                );
+                if($this->users_model->update_user_password_by_email($data, $hash_data))
+                {
+                    // success change in password
+                    redirect('signin/index/5');
+                } else {
+                    redirect('signin/index/4');
+                }
+            } else  {
+                //code does not match
+                redirect('signin/index/3');
+            }
+        }
     }
 
     public function email_verification($email_code = null)
@@ -119,7 +162,7 @@ class Password extends CI_Controller
                 {
                     redirect('signin/index/1');
                 } else {
-                    echo 'we failed updatin data';
+                    echo 'we failed update data';
                 }
             } else {
                 echo "it did not match";

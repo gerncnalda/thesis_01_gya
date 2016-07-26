@@ -117,18 +117,13 @@ class Users_model extends CI_Model
      * @param $email
      * @return bool
      */
-    function does_code_match($data, $email)
+    function does_code_match($data)
     {
+        $this->db->where($data);
+        $this->db->get('users');
+        $result  =  $this->db->count_all_results();
 
-        $query = "SELECT COUNT(*) AS `count`
-                  FROM `users`
-                  WHERE `usr_pwd_change_code` = ?
-                  AND `usr_email` = ? ";
-        $res = $this->db->query($query, array($data['code'], $email));
-        foreach ($res->result() as $row) {
-            $count = $row->count;
-        }
-        if ($count == 1)
+        if($result == 1)
         {
             return true;
         } else {
@@ -196,6 +191,17 @@ class Users_model extends CI_Model
         {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    function update_user_password_by_email($data, $hash_pwd)
+    {
+        $this->db->where($data);
+        if($this->db->update('users', $hash_pwd))
+        {
+            return true;
+        }else {
             return false;
         }
     }
