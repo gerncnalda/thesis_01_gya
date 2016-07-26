@@ -43,7 +43,10 @@ class  Signin extends CI_Controller
                 {
                     $msg_cntnt = array(
                         1 => 'Email verification successful, you can sign in now.',
-                        2 => 'Your account is not activated yet. We\'ve send you an email for verification. Kindly follow the link on your email to activate your account'
+                        2 => 'Your account is not activated yet. We\'ve send you an email for verification. Kindly follow the link on your email to activate your account',
+                        3 => 'Code does not match.',
+                        4 => 'We failed to update you password please contact you system administrator.',
+                        5 => 'You have successfully change your password.'
                     );
                     $data['signin_notification'] = $msg_cntnt[$msg];
                 }

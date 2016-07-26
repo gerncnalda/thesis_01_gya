@@ -66,16 +66,16 @@ class Register extends CI_Controller
 
                 $this->load->library("email");
 
-                $config['protocol']     =   'smtp';
-                $config['smtp_host']    =   'ssl://smtp.gmail.com';
-                $config['smtp_port']    =   '465';
-                $config['smtp_timeout'] =   '30';
-                $config['smtp_user']    =   'gerncnalda@gmail.com';
-                $config['smtp_pass']    =   '0q0y05w8vjib';
-                $config['charset']      =   'utf-8';
-                $config['newline']      =   "\r\n";
-                $config['mailtype']     =   'html';
-                $this->email->initialize($config);
+//                $config['protocol']     =   'smtp';
+//                $config['smtp_host']    =   'ssl://smtp.gmail.com';
+//                $config['smtp_port']    =   '465';
+//                $config['smtp_timeout'] =   '30';
+//                $config['smtp_user']    =   'gerncnalda@gmail.com';
+//                $config['smtp_pass']    =   '0q0y05w8vjib';
+//                $config['charset']      =   'utf-8';
+//                $config['newline']      =   "\r\n";
+//                $config['mailtype']     =   'html';
+//                $this->email->initialize($config);
 
                 $this->email->from('gerncnalda@gmail.com', 'Admin');
                 $this->email->to($usr_email);
@@ -85,8 +85,10 @@ class Register extends CI_Controller
 
                 if($this->email->send())
                 {
-                    redirect('signin/index/2');
+                    echo $link;
+//                    redirect('signin/index/2');
                 } else {
+
                     show_error($this->email->print_debugger());
                 }
             }else  {

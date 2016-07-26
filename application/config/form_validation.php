@@ -109,6 +109,16 @@ $config = array(
             'field' =>  'usr_email',
             'label' =>  'email address',
             'rules' =>  'required|valid_email|max_length[255]'
+        ),
+        array(
+            'field' =>  'usr_pwd',
+            'label' =>  'password',
+            'rules' =>  'required|min_length[6]'
+        ),
+        array(
+            'field' =>  'usr_match_pwd',
+            'label' =>  'confirm password',
+            'rules' =>  'required|min_length[6]|matches[usr_pwd]'
         )
     )
 );
